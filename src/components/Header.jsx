@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { MapPin, Clock, Search, ShoppingCart, User, Menu, ChevronDown, Phone } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
     const { user, logout } = useAuth();
+    const { cartCount } = useCart();
 
     const categories = [
         { name: 'Herramientas', slug: 'herramientas', subcategories: ['Manuales', 'Eléctricas', 'Inalámbricas', 'Jardín'] },
@@ -80,7 +82,11 @@ const Header = () => {
                         >
                             <div className="relative">
                                 <ShoppingCart size={24} />
-                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                                {cartCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                        {cartCount}
+                                    </span>
+                                )}
                             </div>
                             <span className="text-xs font-medium hidden sm:block">Carro</span>
                         </button>

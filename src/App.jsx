@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
+import { CartProvider } from './context/CartContext';
 
 import Header from './components/Header';
 import HeroSlider from './components/HeroSlider';
@@ -46,34 +47,36 @@ function App() {
   return (
     <AuthProvider>
       <ProductProvider>
-        <Router>
-          <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex flex-col">
-            <Header />
-            <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/category/:id" element={<CategoryPage />} />
-                <Route path="/product/:id" element={<ProductPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
+        <CartProvider>
+          <Router>
+            <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex flex-col">
+              <Header />
+              <main className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/category/:id" element={<CategoryPage />} />
+                  <Route path="/product/:id" element={<ProductPage />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
 
-                {/* Protected Routes */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <DashboardPage />
-                    </ProtectedRoute>
-                  }
-                />
+                  {/* Protected Routes */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <DashboardPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        </CartProvider>
       </ProductProvider>
     </AuthProvider>
   );
