@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { MapPin, Clock, Search, ShoppingCart, User, Menu, ChevronDown, Phone } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     const categories = [
         { name: 'Herramientas', slug: 'herramientas', subcategories: ['Manuales', 'Eléctricas', 'Inalámbricas', 'Jardín'] },
@@ -52,13 +54,26 @@ const Header = () => {
 
                     {/* Actions */}
                     <div className="flex items-center gap-6">
-                        <button
-                            onClick={() => navigate('/login')}
-                            className="flex flex-col items-center gap-1 text-slate-600 hover:text-primary transition-colors"
-                        >
-                            <User size={24} />
-                            <span className="text-xs font-medium hidden sm:block">Mi Cuenta</span>
-                        </button>
+                        {user ? (
+                            <div className="flex items-center gap-4">
+                                <button
+                                    onClick={() => navigate('/dashboard')}
+                                    className="flex items-center gap-2 text-slate-900 font-medium hover:text-primary transition-colors"
+                                >
+                                    <img src={user.avatar} alt="" className="w-8 h-8 rounded-full border border-slate-200" />
+                                    <span className="hidden sm:block text-sm">Hola, {user.name.split(' ')[0]}</span>
+                                </button>
+                            </div>
+                        ) : (
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="flex flex-col items-center gap-1 text-slate-600 hover:text-primary transition-colors"
+                            >
+                                <User size={24} />
+                                <span className="text-xs font-medium hidden sm:block">Mi Cuenta</span>
+                            </button>
+                        )}
+
                         <button
                             onClick={() => navigate('/cart')}
                             className="flex flex-col items-center gap-1 text-slate-600 hover:text-primary transition-colors relative"

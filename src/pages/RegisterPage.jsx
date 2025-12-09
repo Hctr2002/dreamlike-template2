@@ -1,33 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, AlertCircle } from 'lucide-react';
+import { User, Mail, Lock, AlertCircle } from 'lucide-react';
 
-const LoginPage = () => {
+const RegisterPage = () => {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { register } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setError('');
-        const result = login(email, password);
+        const result = register(name, email, password);
         if (result.success) {
             navigate('/dashboard');
-        } else {
-            setError(result.message);
-        }
-    };
-
-    const fillDemo = (role) => {
-        if (role === 'admin') {
-            setEmail('admin@dreamlike.cl');
-            setPassword('admin123');
-        } else {
-            setEmail('cliente@dreamlike.cl');
-            setPassword('cliente123');
         }
     };
 
@@ -35,31 +22,25 @@ const LoginPage = () => {
         <div className="min-h-[70vh] flex items-center justify-center py-12 px-4 bg-slate-50">
             <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-slate-900">Bienvenido</h2>
-                    <p className="text-slate-500 mt-2">Ingresa a tu cuenta para continuar</p>
-                </div>
-
-                {/* Demo Credentials */}
-                <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-100">
-                    <p className="font-bold mb-2 flex items-center gap-2"><AlertCircle size={16} /> Credenciales Demo:</p>
-                    <div className="grid grid-cols-2 gap-2">
-                        <button onClick={() => fillDemo('admin')} className="bg-white p-2 rounded border border-blue-200 hover:bg-blue-100 transition-colors text-left">
-                            <span className="block font-bold">Admin</span>
-                            <span className="text-xs opacity-75">admin@dreamlike.cl</span>
-                        </button>
-                        <button onClick={() => fillDemo('client')} className="bg-white p-2 rounded border border-blue-200 hover:bg-blue-100 transition-colors text-left">
-                            <span className="block font-bold">Cliente</span>
-                            <span className="text-xs opacity-75">cliente@dreamlike.cl</span>
-                        </button>
-                    </div>
+                    <h2 className="text-3xl font-bold text-slate-900">Crear Cuenta</h2>
+                    <p className="text-slate-500 mt-2">Únete a Dreamlike hoy mismo</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {error && (
-                        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm flex items-center gap-2">
-                            <AlertCircle size={16} /> {error}
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Nombre Completo</label>
+                        <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                placeholder="Juan Pérez"
+                                required
+                            />
                         </div>
-                    )}
+                    </div>
 
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
@@ -91,25 +72,17 @@ const LoginPage = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-sm">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" className="rounded text-primary focus:ring-primary" />
-                            <span className="text-slate-600">Recordarme</span>
-                        </label>
-                        <a href="#" className="text-primary hover:underline">¿Olvidaste tu contraseña?</a>
-                    </div>
-
                     <button type="submit" className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/30">
-                        Ingresar
+                        Registrarse
                     </button>
                 </form>
 
                 <p className="text-center text-sm text-slate-600 mt-8">
-                    ¿No tienes cuenta? <Link to="/register" className="text-primary font-bold hover:underline">Regístrate aquí</Link>
+                    ¿Ya tienes cuenta? <Link to="/login" className="text-primary font-bold hover:underline">Inicia Sesión</Link>
                 </p>
             </div>
         </div>
     );
 };
 
-export default LoginPage;
+export default RegisterPage;
