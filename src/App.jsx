@@ -19,6 +19,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
+import PresentationPage from './pages/PresentationPage';
 
 // Home Component
 const Home = () => (
@@ -71,6 +72,7 @@ function App() {
                   />
 
                   <Route path="*" element={<NotFoundPage />} />
+                  <Route path="/presentation" element={<PresentationPage />} />
                 </Routes>
               </main>
               <Footer />
